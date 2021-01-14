@@ -66,15 +66,13 @@ class _SpendingTrackerDemoState extends State<SpendingTrackerDemo> with SingleTi
                     children: [
                       //Top area with text fields and incom/expense summary
                       SpendingIncomeExpensesHeader(chart: _chart),
-                      Flexible(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: <Widget>[
-                              SpendingGraph(chart: _chart),
-                              SizedBox(height: 24),
-                              SpendingDateRange(chart: _chart),
-                            ],
-                          ),
+                      SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            SpendingGraph(chart: _chart),
+                            SizedBox(height: 24),
+                            SpendingDateRange(chart: _chart),
+                          ],
                         ),
                       )
                     ],

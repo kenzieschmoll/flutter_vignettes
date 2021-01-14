@@ -14,9 +14,11 @@ class Chart extends ChangeNotifier {
 
   Chart(List<ChartDataSet> dataSets, this.xAxisUnit, this.yAxisUnit)
       : _dataSets = dataSets,
+        _maxDomain = double.maxFinite,
         _domainStart = 0,
-        _domainEnd = 0 {
-    _maxDomain = double.maxFinite;
+        _domainEnd = 0,
+        _rangeStart = 0,
+        _rangeEnd = 0 {
     for (var dataSet in _dataSets) {
       if (dataSet.values.length < _maxDomain) _maxDomain = dataSet.values.length.toDouble();
     }

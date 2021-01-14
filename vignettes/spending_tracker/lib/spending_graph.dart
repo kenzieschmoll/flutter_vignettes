@@ -55,7 +55,7 @@ class _SpendingGraphState extends State<SpendingGraph> with SingleTickerProvider
       '\$2k',
       '0',
     ];
-    String label0Text, label1Text;
+    String label0Text = '', label1Text = '';
     double label0Y, label1Y;
     if (widget.chart.selectedDataPoint != -1) {
       label0Text =
