@@ -45,7 +45,7 @@ class _SpendingCategoryListState extends State<SpendingCategoryList> {
     percent2 /= sum;
 
     return Container(
-      height: 120 * ScalingInfo.scaleY,
+      height: 100 * ScalingInfo.scaleY,
       color: AppColors.colorBg1,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

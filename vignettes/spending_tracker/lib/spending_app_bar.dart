@@ -16,16 +16,20 @@ class SpendingAppBar extends StatelessWidget with PreferredSizeWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 18),
-              child: Icon(
-                Icons.menu,
-                color: Colors.white,
-                size: 28,
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 18),
+                child: Icon(
+                  Icons.menu,
+                  color: Colors.white,
+                  size: 28,
+                ),
               ),
             ),
             HeaderRow(),
-            ProfileIcon(),
+            Flexible(
+              child: ProfileIcon(),
+            ),
           ],
         ),
       ),
