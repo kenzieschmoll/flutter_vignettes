@@ -66,7 +66,6 @@ class _TextTransitionState extends State<TextTransition> with SingleTickerProvid
       width: width,
       height: widget.textStyle.fontSize * 1.2,
       child: Stack(
-        overflow: Overflow.visible,
         children: [
           Positioned(
             top: 0 - _controller.value * widget.textStyle.fontSize,
