@@ -17,29 +17,29 @@ class SpendingTrackerDemo extends StatefulWidget {
 }
 
 class _SpendingTrackerDemoState extends State<SpendingTrackerDemo> with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Chart _chart;
+  late AnimationController _controller;
+  Chart? _chart;
 
   @override
   void initState() {
     var data = ChartData();
     _chart = Chart([data.dataSet1, data.dataSet2], '', '\$');
-    _chart.domainStart = 0;
-    _chart.domainEnd = 13;
-    _chart.rangeStart = 0;
-    _chart.rangeEnd = 8;
-    _chart.selectedDataPoint = 4;
-    _chart.addListener(() => setState(() {}));
-    _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 12000), upperBound: _chart.maxDomain);
+    _chart!.domainStart = 0;
+    _chart!.domainEnd = 13;
+    _chart!.rangeStart = 0;
+    _chart!.rangeEnd = 8;
+    _chart!.selectedDataPoint = 4;
+    _chart!.addListener(() => setState(() {}));
+    _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 12000), upperBound: _chart!.maxDomain);
 
     _controller.addListener(() {
-      final d = _controller.value - _chart.domainStart;
+      final d = _controller.value - _chart!.domainStart;
       if (d < 0) {
-        _chart.domainStart += d;
-        _chart.domainEnd += d;
+        _chart!.domainStart += d;
+        _chart!.domainEnd += d;
       } else {
-        _chart.domainEnd += d;
-        _chart.domainStart += d;
+        _chart!.domainEnd += d;
+        _chart!.domainStart += d;
       }
     });
 
@@ -87,8 +87,8 @@ class _SpendingTrackerDemoState extends State<SpendingTrackerDemo> with SingleTi
 
   bool _handleInteract(InteractNotification notification) {
     if (notification.end) {
-      _controller.value = _chart.domainStart;
-      double target = _chart.domainStart.round().toDouble();
+      _controller.value = _chart!.domainStart;
+      double target = _chart!.domainStart.round().toDouble();
       _controller.animateTo(target, curve: Curves.easeIn);
     } else {
       //_controller.stop();

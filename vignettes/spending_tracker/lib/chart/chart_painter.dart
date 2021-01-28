@@ -5,12 +5,12 @@ import 'chart.dart';
 import '../globals.dart';
 
 class ChartPainter extends CustomPainter {
-  Chart _chart;
-  Animation<double> _selectedFade;
+  Chart? _chart;
+  Animation<double>? _selectedFade;
   List<Color> _backgroundColors;
   List<Color> _foregroundColors;
 
-  ChartPainter(Chart chart, Animation<double> selectedFade, List<Color> backgroundColors, List<Color> foregroundColors)
+  ChartPainter(Chart? chart, Animation<double>? selectedFade, List<Color> backgroundColors, List<Color> foregroundColors)
       : _chart = chart,
         _selectedFade = selectedFade,
         _backgroundColors = backgroundColors,
@@ -18,7 +18,7 @@ class ChartPainter extends CustomPainter {
         super(repaint: Listenable.merge([chart, selectedFade]));
 
   double dataY(List<double> values, int index) {
-    final y = ((values[index] - _chart.rangeStart) / _chart.rangeEnd);
+    final y = ((values[index] - _chart!.rangeStart) / _chart!.rangeEnd);
     return y;
   }
 
@@ -98,24 +98,24 @@ class ChartPainter extends CustomPainter {
     canvas.translate(0.0, size.height);
     canvas.scale(1.0, -1.0);
 
-    for (int i = 0; i < _chart.dataSets.length; ++i) {
-      paintChartData(_chart, i, _backgroundColors.sublist(i * 2, i * 2 + 2),
+    for (int i = 0; i < _chart!.dataSets.length; ++i) {
+      paintChartData(_chart!, i, _backgroundColors.sublist(i * 2, i * 2 + 2),
           _foregroundColors.sublist(i * 2, i * 2 + 2), canvas, size);
     }
 
-    if (_chart.selectedDataPoint != -1) {
+    if (_chart!.selectedDataPoint != -1) {
       double maxY = 0;
-      for (var dataSet in _chart.dataSets) {
-        final y = dataY(dataSet.values, _chart.selectedDataPoint);
+      for (var dataSet in _chart!.dataSets) {
+        final y = dataY(dataSet.values, _chart!.selectedDataPoint);
         if (y > maxY) maxY = y;
       }
-      final range = _chart.domainEnd - _chart.domainStart;
-      final x = ((_chart.selectedDataPoint.toDouble() - _chart.domainStart) / range) * size.width + 28;
+      final range = _chart!.domainEnd - _chart!.domainStart;
+      final x = ((_chart!.selectedDataPoint.toDouble() - _chart!.domainStart) / range) * size.width + 28;
       canvas.drawLine(
-          Offset(x, 0), Offset(x, maxY * size.height), Paint()..color = Colors.white.withOpacity(_selectedFade.value));
+          Offset(x, 0), Offset(x, maxY * size.height), Paint()..color = Colors.white.withOpacity(_selectedFade!.value));
 
-      for (var dataSet in _chart.dataSets) {
-        final y = dataY(dataSet.values, _chart.selectedDataPoint);
+      for (var dataSet in _chart!.dataSets) {
+        final y = dataY(dataSet.values, _chart!.selectedDataPoint);
 
         final offset = Offset(x, y * size.height);
 
@@ -127,9 +127,9 @@ class ChartPainter extends CustomPainter {
               ..shader = ui.Gradient.radial(
                 offset,
                 12.0,
-                [Colors.white.withOpacity(_selectedFade.value), Colors.transparent],
+                [Colors.white.withOpacity(_selectedFade!.value), Colors.transparent],
               ));
-        canvas.drawCircle(offset, 4.8, Paint()..color = Colors.white.withOpacity(_selectedFade.value));
+        canvas.drawCircle(offset, 4.8, Paint()..color = Colors.white.withOpacity(_selectedFade!.value));
       }
     }
   }

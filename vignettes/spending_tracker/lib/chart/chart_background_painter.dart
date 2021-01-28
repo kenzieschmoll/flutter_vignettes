@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'chart.dart';
 
 class ChartBackgroundPainter extends CustomPainter {
-  Chart _chart;
+  Chart? _chart;
 
-  ChartBackgroundPainter(Chart chart)
+  ChartBackgroundPainter(Chart? chart)
       : _chart = chart,
         super(repaint: chart);
 
@@ -26,12 +26,12 @@ class ChartBackgroundPainter extends CustomPainter {
       'Dec',
     ];
     final List<String> xAxisLabels = [];
-    for (int i = _chart.domainStart.round(); i <= _chart.domainEnd.round(); ++i) {
+    for (int i = _chart!.domainStart.round(); i <= _chart!.domainEnd.round(); ++i) {
       xAxisLabels.add(monthNames[i % 12]);
     }
 
-    final double start = _chart.domainStart;
-    final double end = _chart.domainEnd;
+    final double start = _chart!.domainStart;
+    final double end = _chart!.domainEnd;
     for (int i = start.round(); i <= end.round(); ++i) {
       final x = (i.toDouble() - start.round()) / (end - start) * size.width + 28;
       canvas.drawLine(
@@ -48,9 +48,9 @@ class ChartBackgroundPainter extends CustomPainter {
         text: TextSpan(
           text: xAxisLabels[i - start.round()],
           style: TextStyle(
-            color: i == _chart.selectedDataPoint ? Color(0xFFC3C8D9) : Color(0xFFC4C8D9),
+            color: i == _chart!.selectedDataPoint ? Color(0xFFC3C8D9) : Color(0xFFC4C8D9),
             fontFamily: 'Lato',
-            fontWeight: i == _chart.selectedDataPoint ? FontWeight.bold : FontWeight.w200,
+            fontWeight: i == _chart!.selectedDataPoint ? FontWeight.bold : FontWeight.w200,
             fontSize: 12,
           ),
         ),

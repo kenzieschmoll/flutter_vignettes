@@ -7,20 +7,20 @@ import 'app_colors.dart';
 
 
 class SpendingIncomeExpensesHeader extends StatelessWidget {
-  final Chart chart;
+  final Chart? chart;
 
   SpendingIncomeExpensesHeader({this.chart});
 
   @override
   Widget build(context) {
-    final start = chart.domainStart.round();
-    final end = chart.domainEnd.round();
+    final start = chart!.domainStart.round();
+    final end = chart!.domainEnd.round();
 
-    final values0 = chart.dataSets[0].values.sublist(start, end);
-    final values1 = chart.dataSets[1].values.sublist(start, end);
+    final values0 = chart!.dataSets[0].values.sublist(start, end);
+    final values1 = chart!.dataSets[1].values.sublist(start, end);
 
-    final sum0 = values0.fold(0, (a, b) => a + b) * 1000;
-    final sum1 = values1.fold(0, (a, b) => a + b) * 1000;
+    final sum0 = values0.fold(0, (dynamic a, b) => a + b) * 1000;
+    final sum1 = values1.fold(0, (dynamic a, b) => a + b) * 1000;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -50,10 +50,10 @@ class SpendingIncomeExpensesHeader extends StatelessWidget {
 }
 
 class _SummaryColumn extends StatelessWidget {
-  final String title;
-  final List<Color> colors;
-  final int sum;
-  final int mean;
+  final String? title;
+  final List<Color>? colors;
+  final int? sum;
+  final int? mean;
 
   _SummaryColumn({this.title, this.colors, this.sum, this.mean});
 
@@ -66,11 +66,11 @@ class _SummaryColumn extends StatelessWidget {
           height: 8,
           margin: EdgeInsets.only(right: 8),
           decoration: BoxDecoration(
-            gradient: LinearGradient(colors: colors),
+            gradient: LinearGradient(colors: colors!),
           ),
         ),
         Text(
-          title,
+          title!,
           style: TextStyle(
             color: AppColors.colorText2,
             fontFamily: 'Lato',

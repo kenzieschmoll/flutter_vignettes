@@ -8,7 +8,7 @@ import 'chart/chart_background_painter.dart';
 import 'globals.dart';
 
 class SpendingGraph extends StatefulWidget {
-  final Chart chart;
+  final Chart? chart;
 
   SpendingGraph({this.chart});
 
@@ -17,13 +17,13 @@ class SpendingGraph extends StatefulWidget {
 }
 
 class _SpendingGraphState extends State<SpendingGraph> with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  double _startRange;
+  AnimationController? _controller;
+  late double _startRange;
 
   @override
   void initState() {
     _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 600), value: 1.0);
-    _controller.addListener(() {
+    _controller!.addListener(() {
       setState(() {});
     });
     super.initState();
@@ -31,7 +31,7 @@ class _SpendingGraphState extends State<SpendingGraph> with SingleTickerProvider
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller!.dispose();
     super.dispose();
   }
 
@@ -56,14 +56,14 @@ class _SpendingGraphState extends State<SpendingGraph> with SingleTickerProvider
       '0',
     ];
     String label0Text = '', label1Text = '';
-    double label0Y, label1Y;
-    if (widget.chart.selectedDataPoint != -1) {
+    double? label0Y, label1Y;
+    if (widget.chart!.selectedDataPoint != -1) {
       label0Text =
-          numberToPriceString((widget.chart.dataSets[0].values[widget.chart.selectedDataPoint] * 1000).round());
+          numberToPriceString((widget.chart!.dataSets[0].values[widget.chart!.selectedDataPoint] * 1000).round());
       label1Text =
-          numberToPriceString((widget.chart.dataSets[1].values[widget.chart.selectedDataPoint] * 1000).round());
-      label0Y = 150 * ScalingInfo.scaleY * (1.0 - widget.chart.selectedY(0)) + 10;
-      label1Y = 150 * ScalingInfo.scaleY * (1.0 - widget.chart.selectedY(1)) + 10;
+          numberToPriceString((widget.chart!.dataSets[1].values[widget.chart!.selectedDataPoint] * 1000).round());
+      label0Y = 150 * ScalingInfo.scaleY * (1.0 - widget.chart!.selectedY(0)) + 10;
+      label1Y = 150 * ScalingInfo.scaleY * (1.0 - widget.chart!.selectedY(1)) + 10;
       // Resolve label intersection
       final d = label1Y - label0Y;
       if (d.abs() < 12) {
@@ -88,7 +88,6 @@ class _SpendingGraphState extends State<SpendingGraph> with SingleTickerProvider
         //width: 320 * ScalingInfo.scaleX,
         height: 160 * ScalingInfo.scaleY,
         child: Stack(
-          overflow: Overflow.visible,
           children: [
             Container(
               width: appSize.width,
@@ -128,37 +127,37 @@ class _SpendingGraphState extends State<SpendingGraph> with SingleTickerProvider
                 children: yAxisLabels.map((label) => Text(label, style: textStyle)).toList(),
               ),
             ),
-            if (widget.chart.selectedDataPoint != -1) ...{
+            if (widget.chart!.selectedDataPoint != -1) ...{
               _buildLabel(appSize, label0Text, labelStyle, label0Y),
               _buildLabel(appSize, label1Text, labelStyle, label1Y),
             },
-          ],
+          ], clipBehavior: Clip.none,
         ),
       ),
     );
   }
 
-  Widget _buildLabel(Size appSize, String text, TextStyle style, double y) {
+  Widget _buildLabel(Size appSize, String text, TextStyle style, double? y) {
     return Positioned(
-      left: appSize.width * widget.chart.selectedX() + 8,
+      left: appSize.width * widget.chart!.selectedX() + 8,
       top: y,
       width: 40,
       child: Container(
-        color: Color(0x99252B40).withOpacity(_controller.value < 0.6 ? _controller.value : 0.6),
+        color: Color(0x99252B40).withOpacity(_controller!.value < 0.6 ? _controller!.value : 0.6),
         padding: EdgeInsets.all(4),
         child: Text(text,
             textAlign: TextAlign.center,
-            style: style.copyWith(color: Color(0xFFDCE2F5).withOpacity(_controller.value))),
+            style: style.copyWith(color: Color(0xFFDCE2F5).withOpacity(_controller!.value))),
       ),
     );
   }
 
   void _handleTap(Size appSize, TapUpDetails details) {
     final x = (details.localPosition.dx - 28) / appSize.width;
-    final offset = lerp(widget.chart.domainStart, widget.chart.domainEnd, x);
-    if (offset.round() != widget.chart.selectedDataPoint) {
-      widget.chart.selectedDataPoint = offset.round();
-      _controller.forward(from: 0.0);
+    final offset = lerp(widget.chart!.domainStart, widget.chart!.domainEnd, x);
+    if (offset.round() != widget.chart!.selectedDataPoint) {
+      widget.chart!.selectedDataPoint = offset.round();
+      _controller!.forward(from: 0.0);
     }
   }
 
@@ -171,37 +170,37 @@ class _SpendingGraphState extends State<SpendingGraph> with SingleTickerProvider
   }
 
   void _handleStartZoom(ScaleStartDetails details) {
-    _startRange = widget.chart.domainEnd - widget.chart.domainStart;
+    _startRange = widget.chart!.domainEnd - widget.chart!.domainStart;
   }
 
   void _handleZoom(ScaleUpdateDetails details) {
     double d = 1.0 / details.scale;
     if (d == 0) return;
     final targetRange = _startRange * d;
-    final range = widget.chart.domainEnd - widget.chart.domainStart;
+    final range = widget.chart!.domainEnd - widget.chart!.domainStart;
     final scale = targetRange - range;
 
     if (range + scale < 13.0) {
-      if (widget.chart.domainEnd != widget.chart.maxDomain) {
-        widget.chart.domainEnd += scale;
+      if (widget.chart!.domainEnd != widget.chart!.maxDomain) {
+        widget.chart!.domainEnd += scale;
       } else {
-        widget.chart.domainStart -= scale;
+        widget.chart!.domainStart -= scale;
       }
     }
 
-    _controller.reverse();
+    _controller!.reverse();
   }
 
   void _handleDrag(DragUpdateDetails details) {
-    final d = -details.primaryDelta / 200 * (widget.chart.domainEnd - widget.chart.domainStart);
-    if (widget.chart.domainStart + d < 0 || widget.chart.domainEnd + d >= widget.chart.maxDomain) return;
+    final d = -details.primaryDelta! / 200 * (widget.chart!.domainEnd - widget.chart!.domainStart);
+    if (widget.chart!.domainStart + d < 0 || widget.chart!.domainEnd + d >= widget.chart!.maxDomain) return;
     if (d < 0) {
-      widget.chart.domainStart += d;
-      widget.chart.domainEnd += d;
+      widget.chart!.domainStart += d;
+      widget.chart!.domainEnd += d;
     } else {
-      widget.chart.domainEnd += d;
-      widget.chart.domainStart += d;
+      widget.chart!.domainEnd += d;
+      widget.chart!.domainStart += d;
     }
-    _controller.reverse();
+    _controller!.reverse();
   }
 }

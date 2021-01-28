@@ -10,7 +10,7 @@ class Chart extends ChangeNotifier {
   final String xAxisUnit;
   final String yAxisUnit;
 
-  int _selectedDataPoint;
+  int? _selectedDataPoint;
 
   Chart(List<ChartDataSet> dataSets, this.xAxisUnit, this.yAxisUnit)
       : _dataSets = dataSets,
@@ -45,9 +45,9 @@ class Chart extends ChangeNotifier {
     return result;
   }
 
-  double mean(int setIndex) {
+  double? mean(int setIndex) {
     final values = _dataSets[setIndex].values.sublist(_domainStart.round(), _domainEnd.round());
-    return values.fold(0.0, (a, b) => a + b) / values.length;
+    return values.fold(0.0, (dynamic a, b) => a + b) / values.length;
   }
 
   double median(int setIndex) {
@@ -119,18 +119,18 @@ class Chart extends ChangeNotifier {
 
   List<ChartDataSet> get dataSets => _dataSets;
 
-  int get selectedDataPoint => _selectedDataPoint;
+  int get selectedDataPoint => _selectedDataPoint!;
 
   double selectedX() {
     if (_selectedDataPoint == -1) return 0;
     final range = _domainEnd - _domainStart;
-    final x = ((_selectedDataPoint.toDouble() - _domainStart) / range);
+    final x = ((_selectedDataPoint!.toDouble() - _domainStart) / range);
     return x;
   }
 
   double selectedY(int dataSetIndex) {
     if (_selectedDataPoint == -1) return 0;
-    final y = ((_dataSets[dataSetIndex].values[_selectedDataPoint] - rangeStart) / rangeEnd);
+    final y = ((_dataSets[dataSetIndex].values[_selectedDataPoint!] - rangeStart) / rangeEnd);
     return y;
   }
 }

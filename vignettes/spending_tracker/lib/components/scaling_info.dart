@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ScalingInfo {
-  static double scaleX;
-  static double scaleY;
+  static double? scaleX;
+  static late double scaleY;
 
   static bool get initialized => scaleX != null;
 
@@ -13,7 +13,7 @@ class ScalingInfo {
     scaleX = appSize.width / 320;
     scaleY = appSize.height / 480;
 
-    if (scaleX > 2.0) {
+    if (scaleX! > 2.0) {
       scaleX = 2.0;
     }
   }

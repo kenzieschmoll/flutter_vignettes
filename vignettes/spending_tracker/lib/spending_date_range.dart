@@ -7,7 +7,7 @@ import 'app_colors.dart';
 class SpendingDateRange extends StatelessWidget {
   static const int startYear = 2018;
 
-  final Chart chart;
+  final Chart? chart;
 
   SpendingDateRange({this.chart});
 
@@ -28,13 +28,13 @@ class SpendingDateRange extends StatelessWidget {
       'December',
     ];
 
-    final range = chart.domainEnd - chart.domainStart;
+    final range = chart!.domainEnd - chart!.domainStart;
 
-    final start = chart.domainStart.ceil();
+    final start = chart!.domainStart.ceil();
     final startYearOffset = start ~/ 12;
     final startMonth = monthNames[start % 12];
 
-    final end = (chart.domainEnd - 0.1 * range).floor();
+    final end = (chart!.domainEnd - 0.1 * range).floor();
     final endYearOffset = end ~/ 12;
     final endMonth = monthNames[end % 12];
 
