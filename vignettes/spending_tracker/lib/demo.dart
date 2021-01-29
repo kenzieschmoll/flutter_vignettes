@@ -64,7 +64,7 @@ class _SpendingTrackerDemoState extends State<SpendingTrackerDemo> with SingleTi
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      //Top area with text fields and incom/expense summary
+                      //Top area with text fields and income/expense summary
                       SpendingIncomeExpensesHeader(chart: _chart),
                       SingleChildScrollView(
                         child: Column(
